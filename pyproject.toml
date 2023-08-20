@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "poetry new example-langchain"
+version = "0.1.0"
+description = ""
+authors = ["piroyoung <piroyoung@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "poetry new example_langchain"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+openai = "^0.27.8"
+langchain = "^0.0.268"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
