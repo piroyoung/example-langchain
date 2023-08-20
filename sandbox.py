@@ -26,7 +26,7 @@ if __name__ == "__main__":
     logger.info(f"単純な問い合わせ: {answer}\n\n")
 
     # システムメッセージを設定する
-    messages = [
+    messages: List[BaseMessage] = [
         SystemMessage(content="関西弁で話してください"),
         HumanMessage(content="大阪の美味しい食べ物を教えてください"),
     ]
