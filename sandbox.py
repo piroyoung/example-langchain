@@ -2,7 +2,10 @@ from logging import basicConfig
 from logging import getLogger
 from typing import List
 
+from langchain.chains import ConversationChain
+from langchain.chains import LLMChain
 from langchain.chat_models import ChatOpenAI
+from langchain.memory import ConversationBufferMemory
 from langchain.prompts import ChatPromptTemplate
 from langchain.prompts import HumanMessagePromptTemplate
 from langchain.prompts import SystemMessagePromptTemplate
@@ -10,7 +13,6 @@ from langchain.schema import BaseMessage
 from langchain.schema import BaseOutputParser
 from langchain.schema import HumanMessage
 from langchain.schema import SystemMessage
-from langchain.chains import LLMChain
 
 basicConfig(level="INFO")
 logger = getLogger(__name__)
@@ -43,6 +45,7 @@ if __name__ == "__main__":
 
     answer: BaseMessage = model.predict_messages(prompt.format_messages(language="関西弁", place="大阪"))
     logger.info(f"PromptTemplateを使用する: {answer.content}\n\n")
+
 
     # OutputParserを使用する
     class CsvToListParser(BaseOutputParser):
@@ -78,3 +81,15 @@ if __name__ == "__main__":
     )
     result: List[str] = chain.run(category="果物", number="5")
     logger.info(f"LLMChainを使用する: {result}\n\n")
+
+    # Memoryで会話を継続する
+    memory: ConversationBufferMemory = ConversationBufferMemory()
+    chain: ConversationChain = ConversationChain(
+        llm=model,
+        memory=memory
+    )
+
+    a1: str = chain.predict(input="こんにちわ")
+    logger.info(f"Memoryで会話を継続する: {a1}\n\n")
+    a2: str = chain.predict(input="あなたの名前は？")
+    logger.info(f"Memoryで会話を継続する: {a2}\n\n")
